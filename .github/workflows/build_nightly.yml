@@ -44,6 +44,7 @@ jobs:
 
     - name: make pak192
       run: |
+        cd simutrans/trunk
         bash COMPILE.sh
     - name: Rename result
       run: |
@@ -61,32 +62,10 @@ jobs:
 
   compile_pak192-comic-addons:
     runs-on: ubuntu-latest
+    needs: compile_makeobj
 
     steps:
     - uses: actions/checkout@v1
-
-    - name: install_dependencies
-      run: |
-          sudo apt-get -y update
-          sudo apt-get -ym install libpng-dev
-          sudo apt-get -ym install libsdl2-dev
-          sudo apt-get -ym install libbz2-dev
-          sudo apt-get -ym install autoconf
-          svn checkout svn://servers.simutrans.org/simutrans simutrans
-    - name: setup
-      run: |
-        cd simutrans/trunk
-        autoconf
-        ./configure
-        cat config.default >>/dev/stderr
-    - name: make makeobj
-      run: |
-          cd simutrans/trunk/makeobj
-          make
-          mv makeobj ../../..
-          cd ../../..
-          rm -rf simutrans
-
     - name: Compile pak192.comic addons
       run: bash COMPILE_ADDON.sh
 
