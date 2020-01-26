@@ -39,6 +39,17 @@ compile() {
     local size=($3)
     local size=${#size[@]}
 
+    for dat in $3; do
+        # get directory where the dat file is located
+        local dir=$(dirname "$dat")
+
+
+            ./makeobj pak$1 ./compiled/ "./$dat" &> /dev/null
+            if [[ $? != 0 ]]; then
+                echo "Error: Makeobj returned an error for $dat. Aborting..."
+                exit $?
+            fi
+
         progressbar $index $size $dat
         local index=$(( $index + 1 ))
     done
