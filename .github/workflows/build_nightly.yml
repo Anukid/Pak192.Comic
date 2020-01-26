@@ -1,8 +1,6 @@
 name: Nightly build Ubuntu
 
 on: [push]
-    branches:
-      - master
 
 jobs:
   compile_makeobj:
