@@ -44,7 +44,6 @@ jobs:
 
     - name: make pak192
       run: |
-        cd simutrans/trunk
         bash COMPILE.sh
     - name: Rename result
       run: |
@@ -67,16 +66,14 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Compile pak192.comic addons
-      run: bash COMPILE_ADDON.sh
+      run: |
+        bash COMPILE_ADDON.sh
 
     - name: zip addons
       run: |
         mv compiled_addons pak192.comic-nightly-addons
         zip -r pak192-nightly-addons.zip pak192.comic-nightly-addons
         
-    - name: Compile pak192.comic themes
-      run: bash COMPILE_THEME.sh
-
     - name: Update Addons of Nightly Release
       uses: svenstaro/upload-release-action@v1-release
       with:
@@ -86,6 +83,16 @@ jobs:
         tag: Nightly
         overwrite: true
         
+
+  compile_pak192-comic-themes:
+    runs-on: ubuntu-latest
+    needs: compile_makeobj
+
+    steps:
+    - uses: actions/checkout@v1        
+    - name: Compile pak192.comic themes
+      run: bash COMPILE_THEME.sh
+      
     - name: Update Themes of Nightly Release
       uses: svenstaro/upload-release-action@v1-release
       with:
